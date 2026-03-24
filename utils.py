@@ -1,6 +1,7 @@
 import os
+import pandas as pd
 
-def guardar_progreso_local(df, nombre_archivo="avances_revision.csv"):
+def guardar_en_carpeta_proyecto(df, nombre_archivo="avances_revision.csv"):
     # 1. Localiza la carpeta donde está este script (.py)
     directorio_proyecto = os.path.dirname(os.path.abspath(__file__))
     
