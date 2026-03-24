@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import re
+from utils import guardar_en_carpeta_proyecto
 
 # Configuración
 st.set_page_config(page_title="Asistente de Revisión", layout="wide")
@@ -142,22 +143,31 @@ if st.session_state.df_final is not None:
     col_a, col_b = st.columns(2)
     with col_a:
         st.write("✅ **Artículos Incluidos**")
-        st.download_button(
-            label=f"Descargar Finales ({len(st.session_state.df_final)})",
-            data=convert_df(st.session_state.df_final),
-            file_name="articulos_unicos.csv",
-            mime="text/csv",
-            key="btn_final"
-        )
+        if st.button(f"Actualizar Finales ({len(st.session_state.df_final)})", key="btn_final_local"):
+            ruta = guardar_en_carpeta_proyecto(st.session_state.df_final, "articulos_unicos.csv")
+            st.toast(f"Actualizado: {ruta}")
+
+        #st.download_button(
+            #label=f"Descargar Finales ({len(st.session_state.df_final)})",
+            #data=convert_df(st.session_state.df_final),
+            #file_name="articulos_unicos.csv",
+            #mime="text/csv",
+            #key="btn_final"
+        #)
+
     with col_b:
         st.write("👯 **Duplicados Detectados**")
-        st.download_button(
-            label=f"Descargar Duplicados ({len(st.session_state.eliminados['duplicados'])})",
-            data=convert_df(st.session_state.eliminados['duplicados']),
-            file_name="eliminados_por_duplicados.csv",
-            mime="text/csv",
-            key="btn_dup"
-        )
+        if st.button(f"Actualizar Duplicados ({len(st.session_state.eliminados['duplicados'])})", key="btn_dup_local"):
+            guardar_en_carpeta_proyecto(st.session_state.eliminados['duplicados'], "eliminados_por_duplicados.csv")
+            st.toast("Archivo de duplicados actualizado")
+
+        #st.download_button(
+            #label=f"Descargar Duplicados ({len(st.session_state.eliminados['duplicados'])})",
+            #data=convert_df(st.session_state.eliminados['duplicados']),
+            #file_name="eliminados_por_duplicados.csv",
+            #mime="text/csv",
+            #key="btn_dup"
+        #)
 
     st.write("---")
     st.write("❌ **Artículos Excluidos por Criterios**")
@@ -167,30 +177,42 @@ if st.session_state.df_final is not None:
     
     with c1:
         n_tit = len(st.session_state.eliminados['titulo'])
-        st.download_button(
-            label=f"Excluidos por Título ({n_tit})",
-            data=convert_df(st.session_state.eliminados['titulo']),
-            file_name="excluidos_por_titulo.csv",
-            mime="text/csv",
-            disabled=(n_tit == 0)
-        )
+        if st.button(f"Excluidos por Título ({n_tit})", disabled=(n_tit == 0), key="btn_tit_local"):
+            guardar_en_carpeta_proyecto(st.session_state.eliminados['titulo'], "excluidos_por_titulo.csv")
+            st.toast("Excluidos por título actualizados")
+
+        #st.download_button(
+            #label=f"Excluidos por Título ({n_tit})",
+            #data=convert_df(st.session_state.eliminados['titulo']),
+            #file_name="excluidos_por_titulo.csv",
+            #mime="text/csv",
+            #disabled=(n_tit == 0)
+        #)
 
     with c2:
         n_res = len(st.session_state.eliminados['resumen'])
-        st.download_button(
-            label=f"Excluidos por Resumen ({n_res})",
-            data=convert_df(st.session_state.eliminados['resumen']),
-            file_name="excluidos_por_resumen.csv",
-            mime="text/csv",
-            disabled=(n_res == 0)
-        )
+        if st.button(f"Excluidos por Resumen ({n_res})", disabled=(n_res == 0), key="btn_res_local"):
+            guardar_en_carpeta_proyecto(st.session_state.eliminados['resumen'], "excluidos_por_resumen.csv")
+            st.toast("Excluidos por resumen actualizados")
+
+        #st.download_button(
+            #label=f"Excluidos por Resumen ({n_res})",
+            #data=convert_df(st.session_state.eliminados['resumen']),
+            #file_name="excluidos_por_resumen.csv",
+            #mime="text/csv",
+            #disabled=(n_res == 0)
+        #)
 
     with c3:
         n_ina = len(st.session_state.eliminados['inaccesibles'])
-        st.download_button(
-            label=f"Excluidos por Inaccesibilidad ({n_ina})",
-            data=convert_df(st.session_state.eliminados['inaccesibles']),
-            file_name="excluidos_por_inaccesibles.csv",
-            mime="text/csv",
-            disabled=(n_ina == 0)
-        )
+        if st.button(f"Excluidos por Inaccesibilidad ({n_ina})", disabled=(n_ina == 0), key="btn_ina_local"):
+            guardar_en_carpeta_proyecto(st.session_state.eliminados['inaccesibles'], "excluidos_por_inaccesibles.csv")
+            st.toast("Excluidos por inaccesibles actualizados")
+
+        #st.download_button(
+            #label=f"Excluidos por Inaccesibilidad ({n_ina})",
+            #data=convert_df(st.session_state.eliminados['inaccesibles']),
+            #file_name="excluidos_por_inaccesibles.csv",
+            #mime="text/csv",
+            #disabled=(n_ina == 0)
+        #)
