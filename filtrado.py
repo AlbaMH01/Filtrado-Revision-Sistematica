@@ -46,10 +46,10 @@ with st.sidebar:
     
     with st.expander("💾 Cargar Progreso Anterior"):
         st.info("Sube aquí los CSVs que descargaste en tu última sesión para continuar.")
-        f_unicos = st.file_uploader("Subir 'articulos_finales.csv'", type=['csv'])
-        f_tit = st.file_uploader("Subir 'eliminados_titulo.csv'", type=['csv'])
-        f_res = st.file_uploader("Subir 'eliminados_resumen.csv'", type=['csv'])
-        f_ina = st.file_uploader("Subir 'eliminados_inaccesibles.csv'", type=['csv'])
+        f_unicos = st.file_uploader("Subir 'articulos_unicos.csv'", type=['csv'])
+        f_tit = st.file_uploader("Subir 'eliminados_por_titulo.csv'", type=['csv'])
+        f_res = st.file_uploader("Subir 'eliminados_por_resumen.csv'", type=['csv'])
+        f_ina = st.file_uploader("Subir 'eliminados_por_inaccesibles.csv'", type=['csv'])
         
         if st.button("Restaurar Sesión"):
             if f_unicos: st.session_state.df_final = pd.read_csv(f_unicos)
@@ -145,7 +145,7 @@ if st.session_state.df_final is not None:
         st.download_button(
             label=f"Descargar Finales ({len(st.session_state.df_final)})",
             data=convert_df(st.session_state.df_final),
-            file_name="articulos_finales_inclusion.csv",
+            file_name="articulos_unicos.csv",
             mime="text/csv",
             key="btn_final"
         )
@@ -154,7 +154,7 @@ if st.session_state.df_final is not None:
         st.download_button(
             label=f"Descargar Duplicados ({len(st.session_state.eliminados['duplicados'])})",
             data=convert_df(st.session_state.eliminados['duplicados']),
-            file_name="eliminados_duplicados.csv",
+            file_name="eliminados_por_duplicados.csv",
             mime="text/csv",
             key="btn_dup"
         )
